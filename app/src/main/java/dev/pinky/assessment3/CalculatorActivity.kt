@@ -40,7 +40,7 @@ class CalculatorActivity : AppCompatActivity() {
                 tilNumber1.error = "A number is required"
             }
             else if (int_Number2 .isBlank()) {
-                    tilNumber2.error = "A number is required"
+                tilNumber2.error = "A number is required"
             }
             else {
                 add(int_Number1.toDouble(), int_Number2.toDouble())
@@ -70,7 +70,7 @@ class CalculatorActivity : AppCompatActivity() {
             if (int_Number1.isBlank()) {
                 tilNumber1.error = "A number is required"
             }
-            else if (int_Number2. isBlank()){
+            else if(int_Number2. isBlank()){
                     tilNumber2.error = "A number is required"
             }
             else {
@@ -86,7 +86,7 @@ class CalculatorActivity : AppCompatActivity() {
                 tilNumber1.error = "A number is required"
             }
             else if (int_Number2.isBlank()) {
-                    tilNumber2.error = "A number is required"
+                tilNumber2.error = "A number is required"
             }
             else {
                 subtract(int_Number1.toDouble(), int_Number2.toDouble())
