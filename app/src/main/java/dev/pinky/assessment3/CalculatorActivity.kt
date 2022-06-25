@@ -6,107 +6,75 @@ import android.widget.Button
 import android.widget.TextView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import dev.pinky.assessment3.databinding.ActivityCalculatorBinding
 
 class CalculatorActivity : AppCompatActivity() {
-    lateinit var btnAdd : Button
-    lateinit var btnSubtract :Button
-    lateinit var btnDivision : Button
-    lateinit var btnModulus : Button
-    lateinit var tilNumber1 : TextInputLayout
-    lateinit var tilNumber2 : TextInputLayout
-    lateinit var etNumber1 : TextInputEditText
-    lateinit var etNumber2 : TextInputEditText
-    lateinit var tvResult: TextView
+    lateinit var binding: ActivityCalculatorBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_calculator)
+        binding = ActivityCalculatorBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        handleClicks()
+    }
+    fun handleClicks() {
+            binding.btnAdd.setOnClickListener {
+                add(obtainInputs())
 
-        btnAdd = findViewById(R.id.btnAdd)
-        btnSubtract = findViewById(R.id.btnSubtract)
-        btnDivision = findViewById(R.id.btnDivision)
-        btnModulus = findViewById(R.id.btnModulus)
-        tilNumber1 = findViewById(R.id.tilNumber1)
-        tilNumber2 = findViewById(R.id.tilNumber2)
-        etNumber1 = findViewById(R.id.etNumber1)
-        etNumber2 = findViewById(R.id.etNumber2)
-        tvResult = findViewById(R.id.tvResult)
+            }
+            binding.btnSubtract.setOnClickListener {
+                    subtract(obtainInputs())
+            }
+            binding.btnModulus.setOnClickListener {
+                    modulus(obtainInputs())
+            }
+            binding.btnDivision.setOnClickListener {
+                division(obtainInputs())
+            }
 
-        btnAdd.setOnClickListener {
-            tvResult.text = ""
-            val int_Number1 = etNumber1.text.toString()
-            val int_Number2 = etNumber2.text.toString()
+    }
+    data class Inputs (var num1: Double, var num2: Double)
 
-            if (int_Number1.isBlank()) {
-                tilNumber1.error = "A number is required"
-            }
-            else if (int_Number2 .isBlank()) {
-                tilNumber2.error = "A number is required"
-            }
-            else {
-                add(int_Number1.toDouble(), int_Number2.toDouble())
-            }
+    fun obtainInputs():Inputs? {
+        binding.tilNumber1.error = null
+        binding.tilNumber2.error = null
+        val num1 = binding.etNumber1.text.toString()
+        val num2 = binding.etNumber2.text.toString()
+        var error = false
+
+        if (num1.isBlank()) {
+            binding.tilNumber1.error = "Number 1 is Required"
+            error = true
         }
-        btnDivision.setOnClickListener {
-            tvResult.text = ""
-            val int_Number1 = etNumber1.text.toString()
-            val int_Number2 = etNumber2.text.toString()
-
-            if (int_Number1.isBlank()) {
-                tilNumber1.error = "A number is required"
-            }
-            else if (int_Number2.isBlank()){
-                    tilNumber2.error = "A number is required"
-                }
-            else {
-            division(int_Number1.toDouble(), int_Number2.toDouble())
+        if (num2 .isBlank()) {
+            binding.tilNumber2.error = "Number 2 is required"
+            error = true
         }
-
+        if(!error) {
+            return Inputs(num1.toDouble(), num2.toDouble())
         }
-        btnModulus.setOnClickListener {
-            tvResult.text = ""
-            val int_Number1 = etNumber1.text.toString()
-            val int_Number2 = etNumber2.text.toString()
-
-            if (int_Number1.isBlank()) {
-                tilNumber1.error = "A number is required"
-            }
-            else if(int_Number2. isBlank()){
-                    tilNumber2.error = "A number is required"
-            }
-            else {
-                modulus(int_Number1.toDouble(), int_Number2.toDouble())
-
-            }
-        }
-        btnSubtract.setOnClickListener {
-            val int_Number1 = etNumber1.text.toString()
-            val int_Number2 = etNumber2.text.toString()
-
-            if (int_Number1.isBlank()) {
-                tilNumber1.error = "A number is required"
-            }
-            else if (int_Number2.isBlank()) {
-                tilNumber2.error = "A number is required"
-            }
-            else {
-                subtract(int_Number1.toDouble(), int_Number2.toDouble())
-            }
+        return null
+    }
+    fun add (inputs:Inputs?) {
+        if (inputs != null) {
+            displayResults(inputs.num1 + inputs.num2)
         }
     }
-    fun add (int_Number1:Double, int_Number2:Double) {
-        val sum = int_Number1 + int_Number2
-        tvResult.text = sum.toString()
+    fun subtract (inputs: Inputs?) {
+        if (inputs != null) {
+            displayResults(inputs.num1 - inputs.num2)
+        }
     }
-    fun subtract (int_Number1: Double,int_Number2: Double){
-        val difference = int_Number1 - int_Number2
-        tvResult.text = difference.toString()
+    fun division (inputs:Inputs?) {
+        if (inputs != null) {
+            displayResults(inputs.num1 / inputs.num2)
+        }
     }
-    fun division (int_Number1:Double,int_Number2:Double) {
-        val result = int_Number1 / int_Number2
-        tvResult.text = result .toString()
+    fun modulus (inputs:Inputs?) {
+        if (inputs != null) {
+            displayResults(inputs.num1 % inputs.num2)
     }
-    fun modulus (int_Number1:Double,int_Number2:Double) {
-        val outcome = int_Number1 % int_Number2
-        tvResult.text = outcome.toString()
+    }
+    fun displayResults (outcome: Double) {
+        binding.tvResult.text = outcome.toString()
     }
 }
